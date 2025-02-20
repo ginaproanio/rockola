@@ -99,7 +99,8 @@ export const songService = {
       })
     } catch (error) {
       const apiError: ApiError = {
-        message: error instanceof Error ? error.message : 'Error en la búsqueda',
+        message:
+          error instanceof Error ? error.message : 'Error en la búsqueda',
         code: 'SEARCH_ERROR',
       }
       throw apiError
