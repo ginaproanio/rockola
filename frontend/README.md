@@ -8,6 +8,8 @@ Rockola es una aplicación web para gestión y reproducción de música, desarro
 - ✅ Estructura base de componentes
 - ✅ Sistema de routing implementado
 - ✅ Layout principal con Header y Footer
+- ✅ Implementación de Tailwind CSS
+- ⚠️ En progreso: Corrección de warnings ESLint (ver docs/PENDING.md)
 
 ## Credenciales de Prueba
 Para testing del formulario de login, usar:
@@ -95,6 +97,7 @@ El proyecto utiliza:
 - Branch de desarrollo: `feature/frontend-setup`
 
 ## Próximos Pasos
+- [ ] Corregir warnings de ESLint (branch: fix/eslint-warnings)
 - [ ] Implementar integración con API
 - [ ] Desarrollar funcionalidad de búsqueda
 - [ ] Crear componentes de reproducción de música
