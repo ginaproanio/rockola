@@ -22,8 +22,9 @@
 
 #### Servicios
 - [x] `api.ts`:
-  - ~~Tipar respuestas de endpoints~~ [Resuelto: interfaces añadidas]
-  - ~~Implementar manejo de errores tipado~~ [Resuelto: ApiError implementado]
+  - ~~Tipar respuestas de endpoints~~ [Resuelto: interfaces AuthResponse y ApiError implementadas]
+  - ~~Implementar manejo de errores tipado~~ [Resuelto: ApiError y manejo de errores implementado]
+  - ~~Eliminar imports no utilizados~~ [Resuelto: AxiosError removido]
 
 ## Plan de Acción
 
@@ -36,9 +37,9 @@
    - [x] Implementar tipos en servicios API
 
 3. Prioridad Baja
-   - [ ] Optimizar imports
+   - [x] Optimizar imports
    - [x] Revisar warnings de react-refresh
 
 ## Notas Adicionales
-- Los warnings no afectan la funcionalidad actual
-- Se requiere actualizar tests después de implementar los tipos
+- Los warnings han sido resueltos completamente
+- Tests actualizados después de implementar los tipos
