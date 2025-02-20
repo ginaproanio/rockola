@@ -1,17 +1,16 @@
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
+import { Outlet } from 'react-router-dom'
 import Header from './Header'
 import Footer from './Footer'
 
-interface LayoutProps {
-  children: ReactNode
-}
-
-const Layout: FC<LayoutProps> = ({ children }) => {
+const Layout: FC = () => {
+  console.log('Renderizando Layout'); // Debug
+  
   return (
     <div className="layout">
       <Header />
       <main className="main-content">
-        {children}
+        <Outlet />
       </main>
       <Footer />
     </div>
