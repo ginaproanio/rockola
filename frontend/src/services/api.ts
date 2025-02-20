@@ -1,4 +1,4 @@
-import axios, { AxiosError } from 'axios'
+import axios from 'axios'
 import { mockSongs } from './mockData'
 import { Song } from '../types'
 
