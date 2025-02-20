@@ -15,10 +15,10 @@
   - Implementar manejo de errores tipado
 
 #### Páginas
-- [ ] `Playlist.tsx`:
-  - Eliminar imports no utilizados (useEffect)
-  - Revisar estado setCurrentPlaylist no utilizado
-  - Implementar tipos para la lista de reproducción
+- [x] `Playlist.tsx`:
+  - ~~Eliminar imports no utilizados (useEffect)~~ [Resuelto: useEffect está en uso]
+  - ~~Revisar estado setCurrentPlaylist no utilizado~~ [Resuelto: usado en loadPlaylist]
+  - ~~Implementar tipos para la lista de reproducción~~ [Resuelto: usando tipo Song]
 
 #### Servicios
 - [ ] `api.ts`:
@@ -29,10 +29,10 @@
 
 1. Prioridad Alta
    - [x] Implementar interfaces para AuthContext
-   - [ ] Corregir tipos en formularios de Login
+   - [x] Corregir tipos en formularios de Login
 
 2. Prioridad Media
-   - [ ] Limpiar código no utilizado en Playlist
+   - [x] Limpiar código no utilizado en Playlist
    - [ ] Implementar tipos en servicios API
 
 3. Prioridad Baja
