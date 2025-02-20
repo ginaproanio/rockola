@@ -1,0 +1,4 @@
+title,artist,genre,year,duration,url,coverUrl
+Bohemian Rhapsody,Queen,Rock,1975,354,https://example.com/bohemian.mp3,https://example.com/covers/bohemian.jpg
+Billie Jean,Michael Jackson,Pop,1983,294,https://example.com/billiejean.mp3,https://example.com/covers/billiejean.jpg
+Sweet Child O Mine,Guns N Roses,Rock,1987,356,https://example.com/sweet.mp3,https://example.com/covers/sweet.jpg

@@ -1,7 +1,10 @@
 import { FC } from 'react'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../context/AuthContext'
 
 const Header: FC = () => {
+  const { user } = useAuth()
+
   return (
     <header className="bg-[#282828] px-8 py-4">
       <nav className="flex justify-between items-center max-w-7xl mx-auto">
@@ -28,8 +31,16 @@ const Header: FC = () => {
             to="/search"
             className="text-white hover:text-[#1db954] transition-colors"
           >
-            Buscar
+            Búsqueda
           </Link>
+          {user?.role === 'admin' && (
+            <Link
+              to="/admin/songs"
+              className="text-white hover:text-[#1db954] transition-colors"
+            >
+              Gestionar Canciones
+            </Link>
+          )}
         </div>
       </nav>
     </header>

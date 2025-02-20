@@ -1,41 +1,67 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import { authService } from '../services/api'
 
-interface AuthContextType {
+interface User {
+  id: string
+  username: string
+  email: string
+}
+
+interface AuthState {
   isAuthenticated: boolean
-  user: any | null
-  login: (username: string, email: string, password: string) => Promise<void>
+  user: User | null
+}
+
+interface LoginCredentials {
+  username: string
+  email: string
+  password: string
+}
+
+interface AuthContextType extends AuthState {
+  login: (credentials: LoginCredentials) => Promise<void>
   logout: () => void
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [user, setUser] = useState(null)
+  const [authState, setAuthState] = useState<AuthState>({
+    isAuthenticated: false,
+    user: null
+  })
 
   useEffect(() => {
     const token = localStorage.getItem('token')
     if (token) {
-      setIsAuthenticated(true)
-      // Aquí podrías hacer una llamada para obtener los datos del usuario
+      setAuthState(prev => ({ ...prev, isAuthenticated: true }))
     }
   }, [])
 
-  const login = async (username: string, email: string, password: string) => {
-    const user = await authService.login(username, email, password)
-    setUser(user)
-    setIsAuthenticated(true)
+  const login = async ({ username, email, password }: LoginCredentials) => {
+    const userData = await authService.login(username, email, password)
+    setAuthState({
+      isAuthenticated: true,
+      user: userData
+    })
   }
 
   const logout = () => {
     authService.logout()
-    setUser(null)
-    setIsAuthenticated(false)
+    setAuthState({
+      isAuthenticated: false,
+      user: null
+    })
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider 
+      value={{ 
+        ...authState,
+        login,
+        logout 
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

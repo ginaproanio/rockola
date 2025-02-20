@@ -10,6 +10,7 @@ import Search from './pages/Search'
 import Playlist from './pages/Playlist'
 import Login from './components/Auth/Login'
 import ProtectedRoute from './components/Auth/ProtectedRoute'
+import SongManagement from './pages/Admin/SongManagement'
 import { AuthProvider } from './context/AuthContext'
 
 function App() {
@@ -41,6 +42,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <Playlist />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/admin/songs"
+              element={
+                <ProtectedRoute>
+                  <SongManagement />
                 </ProtectedRoute>
               }
             />
