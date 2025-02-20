@@ -21,9 +21,9 @@
   - ~~Implementar tipos para la lista de reproducción~~ [Resuelto: usando tipo Song]
 
 #### Servicios
-- [ ] `api.ts`:
-  - Tipar respuestas de endpoints
-  - Implementar manejo de errores tipado
+- [x] `api.ts`:
+  - ~~Tipar respuestas de endpoints~~ [Resuelto: interfaces añadidas]
+  - ~~Implementar manejo de errores tipado~~ [Resuelto: ApiError implementado]
 
 ## Plan de Acción
 
@@ -33,7 +33,7 @@
 
 2. Prioridad Media
    - [x] Limpiar código no utilizado en Playlist
-   - [ ] Implementar tipos en servicios API
+   - [x] Implementar tipos en servicios API
 
 3. Prioridad Baja
    - [ ] Optimizar imports
