@@ -9,6 +9,12 @@ Rockola es una aplicación web para gestión y reproducción de música, desarro
 - ✅ Sistema de routing implementado
 - ✅ Layout principal con Header y Footer
 
+## Credenciales de Prueba
+Para testing del formulario de login, usar:
+- Username: usuario_prueba
+- Email: prueba@example.com
+- Password: password123
+
 ## Tecnologías
 - React 18
 - TypeScript

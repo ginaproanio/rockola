@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from 'react'
 import { User } from '../types'
+import { authService } from '../services/api'
 
 interface AuthContextType {
   user: User | null
@@ -14,17 +15,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
 
   const login = async (username: string, email: string, password: string) => {
-    // TODO: Implementar llamada a API
-    // Por ahora, simulamos un login exitoso
-    setUser({
-      id: '1',
-      username,
-      name: username, // Por ahora usamos username como name
-      email
-    })
+    try {
+      const userData = await authService.login(username, email, password)
+      setUser(userData)
+    } catch (error) {
+      throw error
+    }
   }
 
   const logout = () => {
+    authService.logout()
     setUser(null)
   }
 
