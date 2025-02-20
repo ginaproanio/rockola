@@ -1,44 +1,61 @@
 # Rockola - Frontend
 
 ## Descripción
-Rockola es una aplicación web moderna para gestión y reproducción de música, desarrollada con React, TypeScript y Vite. Permite a los usuarios buscar canciones, crear listas de reproducción y controlar su experiencia musical.
+Rockola es una aplicación web para gestión y reproducción de música, desarrollada con React, TypeScript y Vite. Permite a los usuarios buscar canciones, crear listas de reproducción y controlar su experiencia musical.
 
-## Tecnologías Principales
+## Estado Actual
+- ✅ Configuración inicial del proyecto
+- ✅ Estructura base de componentes
+- ✅ Sistema de routing implementado
+- ✅ Layout principal con Header y Footer
+
+## Tecnologías
 - React 18
 - TypeScript
 - Vite
-- React Router DOM
+- React Router DOM v6
 - Axios
 - ESLint + Prettier
 
-## Requisitos Previos
+## Requisitos
 - Node.js (versión 14.18.0 o superior)
 - npm (incluido con Node.js)
 
-## Instalación
+## Instalación y Ejecución
 
 1. Clonar el repositorio:
 ```bash
 git clone [URL_DEL_REPOSITORIO]
-cd rockola/frontend
+cd rockola
 ```
 
-2. Instalar dependencias:
+2. Cambiar al branch de desarrollo:
 ```bash
+git checkout feature/frontend-setup
+```
+
+3. Instalar dependencias:
+```bash
+cd frontend
 npm install
 ```
 
-## Scripts Disponibles
+4. Iniciar servidor de desarrollo:
+```bash
+npm run dev
+```
 
-- `npm run dev`: Inicia el servidor de desarrollo
-- `npm run build`: Compila el proyecto para producción
-- `npm run lint`: Ejecuta el linter para verificar el código
-- `npm run lint:fix`: Corrige automáticamente los problemas de linting
-- `npm run preview`: Previsualiza la versión de producción
-- `npm run format`: Formatea el código usando Prettier
+La aplicación estará disponible en `http://localhost:5173`
+
+## Scripts Disponibles
+- `npm run dev`: Inicia el servidor de desarrollo con Vite (http://localhost:5173)
+- `npm run build`: Compila el proyecto para producción (ejecuta TypeScript + Vite build)
+- `npm run lint`: Ejecuta ESLint para verificar el código TypeScript/TSX (con máximo 0 warnings)
+- `npm run lint:fix`: Corrige automáticamente los problemas de linting que sean posibles
+- `npm run preview`: Previsualiza la versión de producción localmente
+- `npm run format`: Formatea el código usando Prettier (archivos .ts y .tsx)
 
 ## Estructura del Proyecto
-
 ```
 frontend/
 ├── src/
@@ -51,42 +68,31 @@ frontend/
 │   │   ├── Home.tsx
 │   │   ├── Search.tsx
 │   │   └── Playlist.tsx
+│   ├── services/
+│   │   └── api.ts
+│   ├── types/
+│   │   └── index.ts
 │   ├── App.tsx
 │   └── main.tsx
-├── public/
-├── index.html
-└── package.json
+└── [archivos de configuración]
 ```
 
 ## Configuración de Desarrollo
+El proyecto utiliza:
+- ESLint para linting
+- Prettier para formateo de código
+- TypeScript para tipado estático
+- Vite como bundler y servidor de desarrollo
 
-### ESLint
-El proyecto utiliza ESLint con las siguientes configuraciones:
-- typescript-eslint
-- react-hooks
-- prettier
+## Control de Versiones
+- Branch principal: `master`
+- Branch de desarrollo: `feature/frontend-setup`
 
-### Prettier
-Configuración personalizada para mantener un estilo de código consistente:
-- Sin punto y coma al final
-- Comillas simples
-- 2 espacios de indentación
-
-## Despliegue
-Para construir la aplicación para producción:
-
-1. Ejecutar el build:
-```bash
-npm run build
-```
-
-2. Los archivos de distribución se generarán en la carpeta `dist/`
-
-## Contribución
-1. Crear una rama para la nueva funcionalidad
-2. Realizar cambios siguiendo las guías de estilo
-3. Ejecutar linting y tests
-4. Crear Pull Request
+## Próximos Pasos
+- [ ] Implementar integración con API
+- [ ] Desarrollar funcionalidad de búsqueda
+- [ ] Crear componentes de reproducción de música
+- [ ] Implementar gestión de listas de reproducción
 
 ## Licencia
 Todos los derechos reservados © 2024 Rockola
