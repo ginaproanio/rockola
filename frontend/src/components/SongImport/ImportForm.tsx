@@ -1,6 +1,7 @@
 import { FC, useState, useRef } from 'react'
 import { parseCsvToSongs } from '../../utils/importUtils'
 import { Song } from '../../types'
+import { songService } from '../../services/songService'
 
 interface ImportFormProps {
   onImportSuccess: (songs: Song[]) => void
@@ -9,10 +10,12 @@ interface ImportFormProps {
 
 const ImportForm: FC<ImportFormProps> = ({ onImportSuccess, onImportError }) => {
   const [isDragging, setIsDragging] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleFile = async (file: File) => {
     try {
+      setIsLoading(true)
       const text = await file.text()
       const { songs, errors } = parseCsvToSongs(text)
       
@@ -20,10 +23,17 @@ const ImportForm: FC<ImportFormProps> = ({ onImportSuccess, onImportError }) => 
         onImportError(errors)
         return
       }
+
+      // Guardar las canciones usando el servicio
+      const savedSongs = await Promise.all(
+        songs.map(song => songService.createSong(song))
+      )
       
-      onImportSuccess(songs)
+      onImportSuccess(savedSongs)
     } catch (error) {
       onImportError(['Failed to process file'])
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -39,16 +49,22 @@ const ImportForm: FC<ImportFormProps> = ({ onImportSuccess, onImportError }) => 
     }
   }
 
+  const handleClick = () => {
+    fileInputRef.current?.click()
+  }
+
   return (
     <div
       className={`p-8 border-2 border-dashed rounded-lg text-center 
-        ${isDragging ? 'border-green-500 bg-green-50' : 'border-gray-300'}`}
+        ${isDragging ? 'border-green-500 bg-green-50' : 'border-gray-300'}
+        ${isLoading ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       onDragOver={(e) => {
         e.preventDefault()
         setIsDragging(true)
       }}
       onDragLeave={() => setIsDragging(false)}
       onDrop={handleDrop}
+      onClick={handleClick}
     >
       <input
         type="file"
@@ -61,16 +77,21 @@ const ImportForm: FC<ImportFormProps> = ({ onImportSuccess, onImportError }) => 
         }}
       />
       
-      <div className="space-y-4">
-        <p className="text-lg">Drag and drop your CSV file here</p>
-        <p className="text-sm text-gray-500">or</p>
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Select File
-        </button>
-      </div>
+      {isLoading ? (
+        <div className="text-gray-600">
+          <span className="animate-spin inline-block mr-2">⌛</span>
+          Processing file...
+        </div>
+      ) : (
+        <div>
+          <p className="text-lg mb-2">
+            Drag and drop a CSV file here, or click to select
+          </p>
+          <p className="text-sm text-gray-500">
+            Only CSV files are supported
+          </p>
+        </div>
+      )}
     </div>
   )
 }

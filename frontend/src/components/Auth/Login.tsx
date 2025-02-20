@@ -1,6 +1,6 @@
 import { useState, FormEvent, ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useAuth } from '../../hooks/useAuth'
+import { useAuth } from '../../context/AuthContext'
 import type { LoginCredentials } from '../../context/types'
 
 type FormField = keyof LoginCredentials

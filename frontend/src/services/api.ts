@@ -9,6 +9,7 @@ interface AuthResponse {
   id: number
   username: string
   email: string
+  role: 'admin' | 'user'
 }
 
 interface ApiError {
@@ -25,9 +26,18 @@ export const api = axios.create({
 
 // Credenciales de prueba
 const TEST_CREDENTIALS = {
-  username: 'usuario_prueba',
-  email: 'prueba@example.com',
-  password: 'password123',
+  admin: {
+    username: 'admin_rockola',
+    email: 'admin@rockola.com',
+    password: 'admin123',
+    role: 'admin'
+  },
+  user: {
+    username: 'usuario_prueba',
+    email: 'prueba@example.com',
+    password: 'password123',
+    role: 'user'
+  }
 } as const
 
 export const authService = {
@@ -38,20 +48,36 @@ export const authService = {
   ): Promise<AuthResponse> => {
     try {
       console.log('Intentando login con:', { username, email, password })
-      console.log('Comparando con:', TEST_CREDENTIALS)
 
+      // Verificar credenciales de admin
       if (
-        username === TEST_CREDENTIALS.username &&
-        email === TEST_CREDENTIALS.email &&
-        password === TEST_CREDENTIALS.password
+        username === TEST_CREDENTIALS.admin.username &&
+        email === TEST_CREDENTIALS.admin.email &&
+        password === TEST_CREDENTIALS.admin.password
+      ) {
+        const mockAdmin: AuthResponse = {
+          id: 1,
+          username: TEST_CREDENTIALS.admin.username,
+          email: TEST_CREDENTIALS.admin.email,
+          role: TEST_CREDENTIALS.admin.role
+        }
+        localStorage.setItem('token', 'mock-admin-token-123')
+        return mockAdmin
+      }
+
+      // Verificar credenciales de usuario regular
+      if (
+        username === TEST_CREDENTIALS.user.username &&
+        email === TEST_CREDENTIALS.user.email &&
+        password === TEST_CREDENTIALS.user.password
       ) {
         const mockUser: AuthResponse = {
-          id: 1,
-          username: TEST_CREDENTIALS.username,
-          email: TEST_CREDENTIALS.email,
+          id: 2,
+          username: TEST_CREDENTIALS.user.username,
+          email: TEST_CREDENTIALS.user.email,
+          role: TEST_CREDENTIALS.user.role
         }
-
-        localStorage.setItem('token', 'mock-token-123')
+        localStorage.setItem('token', 'mock-user-token-123')
         return mockUser
       }
 

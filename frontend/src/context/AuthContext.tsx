@@ -5,6 +5,7 @@ interface User {
   id: string
   username: string
   email: string
+  role: 'admin' | 'user'  // Añadimos el campo role
 }
 
 interface AuthState {
