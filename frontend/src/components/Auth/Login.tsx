@@ -1,157 +1,131 @@
-import { useState } from 'react'
+import { useState, FormEvent, ChangeEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 
-const Login = () => {
+interface LoginFormData {
+  username: string
+  email: string
+  password: string
+}
+
+interface FormError {
+  field: keyof LoginFormData
+  message: string
+}
+
+export default function Login() {
   const navigate = useNavigate()
   const { login } = useAuth()
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState<LoginFormData>({
     username: '',
     email: '',
-    password: '',
+    password: ''
   })
-  const [error, setError] = useState('')
+
+  const [errors, setErrors] = useState<FormError[]>([])
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    })
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }))
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const validateForm = (): boolean => {
+    const newErrors: FormError[] = []
+
+    if (!formData.username.trim()) {
+      newErrors.push({ field: 'username', message: 'Username is required' })
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.push({ field: 'email', message: 'Email is required' })
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.push({ field: 'email', message: 'Invalid email format' })
+    }
+
+    if (!formData.password) {
+      newErrors.push({ field: 'password', message: 'Password is required' })
+    } else if (formData.password.length < 6) {
+      newErrors.push({ field: 'password', message: 'Password must be at least 6 characters' })
+    }
+
+    setErrors(newErrors)
+    return newErrors.length === 0
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    setError('')
-    setIsLoading(true)
+    
+    if (!validateForm()) return
 
     try {
-      await login(formData.username, formData.email, formData.password)
+      setIsLoading(true)
+      await login(formData)
       navigate('/')
-    } catch (err) {
-      setError('Credenciales incorrectas')
+    } catch (error) {
+      setErrors([{ 
+        field: 'username', 
+        message: error instanceof Error ? error.message : 'Login failed' 
+      }])
     } finally {
       setIsLoading(false)
     }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-[#282828] to-[#121212] px-4 py-12">
-      <div className="max-w-md w-full space-y-8 bg-[#1a1a1a]/90 backdrop-blur-lg p-8 rounded-2xl shadow-xl">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Iniciar Sesión
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-400">
-            Accede a tu cuenta de Rockola
-          </p>
-        </div>
-
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="rounded-md shadow-sm space-y-4">
-            <div>
-              <label htmlFor="username" className="sr-only">
-                Usuario
-              </label>
-              <input
-                id="username"
-                name="username"
-                type="text"
-                required
-                value={formData.username}
-                onChange={handleChange}
-                className="appearance-none relative block w-full px-4 py-3 bg-[#282828] border border-[#404040] placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1db954] focus:border-transparent"
-                placeholder="Usuario"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="email" className="sr-only">
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="email"
-                required
-                value={formData.email}
-                onChange={handleChange}
-                className="appearance-none relative block w-full px-4 py-3 bg-[#282828] border border-[#404040] placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1db954] focus:border-transparent"
-                placeholder="Email"
-              />
-            </div>
-
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Contraseña
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="appearance-none relative block w-full px-4 py-3 bg-[#282828] border border-[#404040] placeholder-gray-500 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1db954] focus:border-transparent"
-                placeholder="Contraseña"
-              />
-            </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-900">
+      <form onSubmit={handleSubmit} className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
+        <h2 className="text-2xl text-white mb-6 text-center">Login to Rockola</h2>
+        
+        {errors.length > 0 && (
+          <div className="mb-4 p-3 bg-red-500 text-white rounded">
+            {errors.map((error, index) => (
+              <p key={index}>{error.message}</p>
+            ))}
           </div>
+        )}
 
-          {error && (
-            <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded-lg text-sm">
-              {error}
-            </div>
-          )}
+        <div className="space-y-4">
+          <input
+            type="text"
+            name="username"
+            value={formData.username}
+            onChange={handleInputChange}
+            placeholder="Username"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+          />
+          
+          <input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleInputChange}
+            placeholder="Email"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+          />
+          
+          <input
+            type="password"
+            name="password"
+            value={formData.password}
+            onChange={handleInputChange}
+            placeholder="Password"
+            className="w-full p-2 rounded bg-gray-700 text-white"
+          />
 
-          <div>
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-[#1db954] hover:bg-[#1ed760] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1db954] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
-            >
-              {isLoading ? (
-                <svg
-                  className="animate-spin h-5 w-5 text-white"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    strokeWidth="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
-              ) : (
-                'Iniciar Sesión'
-              )}
-            </button>
-          </div>
-        </form>
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-400">
-            ¿No tienes cuenta?{' '}
-            <a
-              href="#"
-              className="font-medium text-[#1db954] hover:text-[#1ed760]"
-            >
-              Regístrate aquí
-            </a>
-          </p>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600 disabled:opacity-50"
+          >
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
         </div>
-      </div>
+      </form>
     </div>
   )
 }
-
-export default Login
