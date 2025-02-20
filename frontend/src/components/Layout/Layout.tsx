@@ -4,8 +4,8 @@ import Header from './Header'
 import Footer from './Footer'
 
 const Layout: FC = () => {
-  console.log('Renderizando Layout'); // Debug
-  
+  console.log('Renderizando Layout') // Debug
+
   return (
     <div className="layout">
       <Header />

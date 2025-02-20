@@ -9,7 +9,7 @@ export const mockSongs: Song[] = [
     year: 1975,
     duration: 354,
     coverUrl: 'https://example.com/bohemian.jpg',
-    url: 'https://example.com/songs/bohemian-rhapsody.mp3'
+    url: 'https://example.com/songs/bohemian-rhapsody.mp3',
   },
   {
     id: 2,
@@ -19,7 +19,7 @@ export const mockSongs: Song[] = [
     year: 1983,
     duration: 294,
     coverUrl: 'https://example.com/billiejean.jpg',
-    url: 'https://example.com/songs/billie-jean.mp3'
+    url: 'https://example.com/songs/billie-jean.mp3',
   },
   {
     id: 3,
@@ -29,6 +29,6 @@ export const mockSongs: Song[] = [
     year: 1987,
     duration: 356,
     coverUrl: 'https://example.com/sweet.jpg',
-    url: 'https://example.com/songs/sweet-child.mp3'
-  }
+    url: 'https://example.com/songs/sweet-child.mp3',
+  },
 ]

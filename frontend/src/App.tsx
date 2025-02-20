@@ -1,26 +1,52 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
-import Layout from './components/Layout/Layout'
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom'
+import Header from './components/Layout/Header'
 import Home from './pages/Home'
-import Playlist from './pages/Playlist'
 import Search from './pages/Search'
+import Playlist from './pages/Playlist'
 import Login from './components/Auth/Login'
-import './App.css'
+import ProtectedRoute from './components/Auth/ProtectedRoute'
+import { AuthProvider } from './context/AuthContext'
 
 function App() {
-  console.log('Renderizando App'); // Debug
-  
   return (
     <AuthProvider>
       <Router>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="playlist" element={<Playlist />} />
-            <Route path="search" element={<Search />} />
-            <Route path="login" element={<Login />} />
-          </Route>
-        </Routes>
+        <div className="min-h-screen bg-gradient-to-b from-[#282828] to-[#121212]">
+          <Header />
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Home />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/search"
+              element={
+                <ProtectedRoute>
+                  <Search />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/playlist"
+              element={
+                <ProtectedRoute>
+                  <Playlist />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </div>
       </Router>
     </AuthProvider>
   )
